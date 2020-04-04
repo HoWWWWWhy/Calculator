@@ -1,113 +1,119 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const NumberPad = () => {
+  let rows = [];
+  let nums = [
+    [7, 8, 9],
+    [4, 5, 6],
+    [1, 2, 3],
+    ['+/-', 0, '='],
+  ];
+  for (let i = 0; i < 4; i++) {
+    let row = [];
+    for (let j = 0; j < 3; j++) {
+      row.push(
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.textButton} key={i * 3 + j}>
+            {nums[i][j]}
+          </Text>
+        </TouchableOpacity>,
+      );
+    }
+    rows.push(<View style={styles.row}>{row}</View>);
+  }
+  return rows;
+};
 
-const App: () => React$Node = () => {
+const OperationPad = () => {
+  let operations = ['÷', '×', '－', '＋'];
+  let rows = [];
+  for (let i = 0; i < 4; i++) {
+    rows.push(
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.textButton}>{operations[i]}</Text>
+      </TouchableOpacity>,
+    );
+  }
+  return rows;
+};
+const App = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+      <View style={styles.container}>
+        <View style={styles.calculation}>
+          <Text style={styles.textCalculation}>11x11</Text>
+        </View>
+        <View style={styles.result}>
+          <Text style={styles.textResult}>121</Text>
+        </View>
+        <View style={styles.buttons}>
+          <View style={styles.numbers}>
+            <NumberPad />
           </View>
-        </ScrollView>
-      </SafeAreaView>
+          <View style={styles.operations}>
+            <OperationPad />
+          </View>
+        </View>
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  calculation: {
+    flex: 2,
+    backgroundColor: 'green',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
-  body: {
-    backgroundColor: Colors.white,
+  result: {
+    flex: 1,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  buttons: {
+    flexGrow: 7,
+    flexDirection: 'row',
   },
-  sectionTitle: {
+  numbers: {
+    flex: 3,
+    backgroundColor: 'yellow',
+  },
+  operations: {
+    flex: 1,
+    backgroundColor: 'grey',
+    justifyContent: 'space-around',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  textCalculation: {
+    fontSize: 50,
+    color: 'white',
+  },
+  textResult: {
     fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+    color: 'white',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  button: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  textButton: {
+    fontSize: 30,
   },
 });
 
